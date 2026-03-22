@@ -436,6 +436,17 @@
     });
   }, { threshold: 0.3 });
   statsObserver.observe(heroStats);
+
+  // Show map dots after image loads
+  const heroMap = document.querySelector('.hero-map');
+  const mapImg = document.querySelector('.hero-map-img');
+  if (mapImg) {
+    if (mapImg.complete) {
+      heroMap.classList.add('loaded');
+    } else {
+      mapImg.addEventListener('load', () => heroMap.classList.add('loaded'));
+    }
+  }
 </script>
 </body>
 </html>
