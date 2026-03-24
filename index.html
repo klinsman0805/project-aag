@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Affinity Axis Group — Trade Smarter. Grow Faster.</title>
 <meta name="description" content="Affinity Axis Group delivers professional-grade Forex, cryptocurrency, and CFD solutions across Asia — backed by a decade of expertise and built for serious traders, investors, and partners.">
 <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -11,7 +11,7 @@
 <link rel="icon" type="image/jpeg" href="assets/aag-logo-v2.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="styles.css?v=20260322">
+<link rel="stylesheet" href="styles.css?v=20260324">
 </head>
 <body>
 
@@ -393,13 +393,25 @@
   }, { threshold: 0.1 });
   reveals.forEach(r => revealObserver.observe(r));
 
-  // Nav scroll opacity
+  // Nav scroll opacity (desktop only — mobile uses solid bar in CSS to avoid see-through on iOS Safari)
   const nav = document.querySelector('nav');
-  window.addEventListener('scroll', () => {
+  const navScrollMq = window.matchMedia('(min-width: 901px)');
+  function updateNavBg() {
+    if (!navScrollMq.matches) {
+      nav.style.removeProperty('background');
+      return;
+    }
     nav.style.background = window.scrollY > 40
       ? 'rgba(15,25,35,0.97)'
       : 'rgba(15,25,35,0.85)';
-  });
+  }
+  updateNavBg();
+  window.addEventListener('scroll', updateNavBg, { passive: true });
+  if (navScrollMq.addEventListener) {
+    navScrollMq.addEventListener('change', updateNavBg);
+  } else {
+    navScrollMq.addListener(updateNavBg);
+  }
 
   // Bottom nav — highlight active section on scroll
   const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
